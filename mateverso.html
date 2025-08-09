@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mateverso Radio - En Vivo 24/7</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        emerald: {
+                            25: '#f0fdf4',
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            200: '#a7f3d0',
+                            300: '#6ee7b7',
+                            400: '#34d399',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            800: '#065f46',
+                            900: '#064e3b'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-green {
+            background: linear-gradient(135deg, #059669, #047857, #064e3b);
+        }
+        
+        .glass-effect {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.6);
+        }
+        
+        .news-card {
+            transition: all 0.3s ease;
+        }
+        
+        .news-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .ad-banner {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            border: 2px solid #10b981;
+            transition: all 0.3s ease;
+        }
+        
+        .ad-banner:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.2);
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .wave-animation {
+            animation: wave 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes wave {
+            0%, 100% { transform: scaleY(1); }
+            50% { transform: scaleY(1.5); }
+        }
+        
+        /* Volume Slider Styles */
+        .slider {
+            -webkit-appearance: none;
+            background: linear-gradient(to right, #10b981 0%, #10b981 70%, #e5e7eb 70%, #e5e7eb 100%);
+            outline: none;
+            border-radius: 15px;
+        }
+        
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #059669;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .slider::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #059669;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body class="bg-emerald-25 min-h-screen">
+    <div class="w-full p-4 md:p-6">
+        <div class="max-w-6xl mx-auto space-y-6">
+            <!-- Header -->
+            <header class="rounded-2xl p-4 md:p-6 gradient-green text-white border border-white/10 shadow-lg">
+                <div class="flex items-center justify-between gap-4">
+                    <div class="flex items-center gap-3 min-w-0">
+                        <img src="logo.jpg" alt="Logo Mateverso" style="width: 300px; height: 300px;" />
+                        </div>
+                        </div>
+                        <div class="font-bold text-lg md:text-xl truncate">Mateverso Radio</div>
+                        <span class="px-2 py-1 rounded-full text-xs border border-white/20 glass-effect text-emerald-800">24/7</span>
+                        <span class="px-2 py-1 rounded-full text-xs border border-white/20 glass-effect text-emerald-800">España</span>
+                        <span class="px-2 py-1 rounded-full text-xs border border-white/20 glass-effect text-emerald-800">Al Mundo</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Player Section -->
+            <section class="rounded-2xl border border-emerald-200 bg-white p-6 shadow-lg">
+                <div class="text-xs text-emerald-600 mb-1">En directo</div>
+                <h1 class="text-2xl md:text-3xl font-black text-emerald-900 leading-tight mb-2">Mateverso Radio: Live</h1>
+                <p class="text-gray-600 mb-4">La Radio que suena como vos.</p>
+                
+                <!-- Player Controls -->
+                <div class="rounded-2xl p-4 bg-white border border-emerald-200 flex items-center gap-4 shadow-sm">
+                    <button id="playButton" class="p-3 rounded-xl bg-emerald-100 hover:bg-emerald-200 transition-all duration-300 hover:scale-105">
+                        <svg id="playIcon" class="w-5 h-5 text-emerald-700" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                        <svg id="pauseIcon" class="w-5 h-5 text-emerald-700 hidden" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                        </svg>
+                    </button>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2 text-xs text-emerald-700 mb-1">
+                            <span id="liveIndicator" class="px-2 py-1 rounded-full text-xs border border-emerald-200 bg-emerald-50 pulse-animation">LIVE</span>
+                            <span>Mateverso Radio</span>
+                        </div>
+                        <div class="truncate text-base font-medium" id="currentShow">En vivo: Mateverso Radio</div>
+                        <div class="flex items-center gap-2 text-xs text-gray-500">128 kbps · AAC • España</div>
+                    </div>
+                    <div class="flex items-center gap-4 text-gray-700">
+                        <!-- Volume Controls -->
+                        <div class="flex items-center gap-2">
+                            <button id="volumeDownButton" class="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-all duration-300">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
+                                </svg>
+                            </button>
+                            <div class="flex items-center gap-1">
+                                <input type="range" id="volumeSlider" min="0" max="100" value="70" 
+                                       class="w-20 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider">
+                            </div>
+                            <button id="volumeUpButton" class="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-all duration-300">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                                </svg>
+                            </button>
+                        </div>
+                        
+                        <!-- Audio Visualizer -->
+                        <div class="flex items-center gap-1">
+                            <div class="w-1 h-3 bg-emerald-400 rounded wave-animation" style="animation-delay: 0s"></div>
+                            <div class="w-1 h-4 bg-emerald-400 rounded wave-animation" style="animation-delay: 0.1s"></div>
+                            <div class="w-1 h-2 bg-emerald-400 rounded wave-animation" style="animation-delay: 0.2s"></div>
+                            <div class="w-1 h-5 bg-emerald-400 rounded wave-animation" style="animation-delay: 0.3s"></div>
+                        </div>
+                    </div>
+                    <audio id="radioStream" preload="none">
+                        <source src="http://cdn.instream.audio/stream/mateverso" type="audio/mpeg">
+                        Tu navegador no soporta el elemento de audio.
+                    </audio>
+                </div>
+            </section>
+
+            <!-- News Section -->
+            <section class="mt-6">
+                <div class="flex items-center gap-2 mb-4">
+                    <svg class="w-5 h-5 text-emerald-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9.5a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path>
+                    </svg>
+                    <h2 class="text-base md:text-lg font-semibold text-emerald-900">Noticias</h2>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4" id="newsContainer">
+                    <!-- News items will be populated by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Advertisement Banners -->
+            <section class="mt-8">
+                <h2 class="text-lg font-semibold text-emerald-900 mb-4">Publicidad</h2>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="ad-banner rounded-2xl p-6 h-40 flex flex-col items-center justify-center text-center">
+                        <div class="text-emerald-800 font-bold text-lg mb-2">¡Escúchanos!</div>
+                        <div class="text-emerald-700 text-sm">Tu música favorita 24/7</div>
+                    </div>
+                    <div class="ad-banner rounded-2xl p-6 h-40 flex flex-col items-center justify-center text-center">
+                        <div class="text-emerald-800 font-bold text-lg mb-2">Noticias Frescas</div>
+                        <div class="text-emerald-700 text-sm">Actualidad al instante</div>
+                    </div>
+                    <div class="ad-banner rounded-2xl p-6 h-40 flex flex-col items-center justify-center text-center">
+                        <div class="text-emerald-800 font-bold text-lg mb-2">Comunidad</div>
+                        <div class="text-emerald-700 text-sm">Únete a nuestra familia</div>
+                    </div>
+                    <div class="ad-banner rounded-2xl p-6 h-40 flex flex-col items-center justify-center text-center">
+                        <div class="text-emerald-800 font-bold text-lg mb-2">Eventos</div>
+                        <div class="text-emerald-700 text-sm">Los mejores shows en vivo</div>
+                    </div>
+                    <div class="ad-banner rounded-2xl p-6 h-40 flex flex-col items-center justify-center text-center">
+                        <div class="text-emerald-800 font-bold text-lg mb-2">Entrevistas</div>
+                        <div class="text-emerald-700 text-sm">Con los mejores artistas</div>
+                    </div>
+                    <div class="ad-banner rounded-2xl p-6 h-40 flex flex-col items-center justify-center text-center">
+                        <div class="text-emerald-800 font-bold text-lg mb-2">Música Indie</div>
+                        <div class="text-emerald-700 text-sm">Descubre nuevos talentos</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        // News data
+const noticias = [
+  { title: "Clima en España: temperaturas primaverales en Madrid con 18°C", tag: "Tiempo", time: "Hace 1 h" },
+  { title: "BBB: Los mejores restaurantes buenos, bonitos y baratos de Madrid", tag: "BBB", time: "Hace 2 h" },
+  { title: "Nueva playlist colaborativa con oyentes de Uruguay", tag: "Comunidad", time: "Hace 4 h" },
+  { title: "Agenda: shows indie en Madrid esta semana", tag: "Agenda", time: "Ayer" },
+  { title: "Gourmet: Abre El Coloso, nueva heladería artesanal en Malasaña", tag: "Gourmet", time: "Ayer" },
+  { title: "Trámite: Como obtener el DNI en España", tag: "Papeleos", time: "Ayer" }
+];
+
+        // Player functionality
+        let isPlaying = false;
+        const playButton = document.getElementById('playButton');
+        const playIcon = document.getElementById('playIcon');
+        const pauseIcon = document.getElementById('pauseIcon');
+        const radioStream = document.getElementById('radioStream');
+
+        playButton.addEventListener('click', function() {
+            if (!isPlaying) {
+                radioStream.play().then(() => {
+                    isPlaying = true;
+                    playIcon.classList.add('hidden');
+                    pauseIcon.classList.remove('hidden');
+                    document.getElementById('liveIndicator').classList.add('pulse-animation');
+                }).catch((error) => {
+                    console.error('Error playing audio:', error);
+                    alert('Error al reproducir el stream. Verifica tu conexión a internet.');
+                });
+            } else {
+                radioStream.pause();
+                isPlaying = false;
+                playIcon.classList.remove('hidden');
+                pauseIcon.classList.add('hidden');
+                document.getElementById('liveIndicator').classList.remove('pulse-animation');
+            }
+        });
+
+        // Volume functionality
+        const volumeSlider = document.getElementById('volumeSlider');
+        const volumeUpButton = document.getElementById('volumeUpButton');
+        const volumeDownButton = document.getElementById('volumeDownButton');
+
+        // Set initial volume
+        radioStream.volume = 0.7; // 70%
+
+        // Volume slider functionality
+        volumeSlider.addEventListener('input', function() {
+            const volume = this.value / 100;
+            radioStream.volume = volume;
+            updateVolumeSliderBackground(this.value);
+        });
+
+        // Volume up button
+        volumeUpButton.addEventListener('click', function() {
+            let currentVolume = Math.round(radioStream.volume * 100);
+            if (currentVolume < 100) {
+                currentVolume = Math.min(100, currentVolume + 10);
+                radioStream.volume = currentVolume / 100;
+                volumeSlider.value = currentVolume;
+                updateVolumeSliderBackground(currentVolume);
+            }
+        });
+
+        // Volume down button
+        volumeDownButton.addEventListener('click', function() {
+            let currentVolume = Math.round(radioStream.volume * 100);
+            if (currentVolume > 0) {
+                currentVolume = Math.max(0, currentVolume - 10);
+                radioStream.volume = currentVolume / 100;
+                volumeSlider.value = currentVolume;
+                updateVolumeSliderBackground(currentVolume);
+            }
+        });
+
+        // Update volume slider background
+        function updateVolumeSliderBackground(value) {
+            const percentage = value;
+            volumeSlider.style.background = `linear-gradient(to right, #10b981 0%, #10b981 ${percentage}%, #e5e7eb ${percentage}%, #e5e7eb 100%)`;
+        }
+
+        // Initialize volume slider background
+        updateVolumeSliderBackground(70);
+
+        // Populate news
+        function populateNews() {
+            const newsContainer = document.getElementById('newsContainer');
+            newsContainer.innerHTML = '';
+            
+            noticias.forEach((noticia, index) => {
+                const newsItem = document.createElement('article');
+                newsItem.className = 'news-card rounded-2xl border border-emerald-200 bg-white p-4 shadow-sm';
+                newsItem.style.animationDelay = `${index * 0.1}s`;
+                
+                newsItem.innerHTML = `
+                    <div class="text-xs text-emerald-700 font-medium mb-1">${noticia.tag}</div>
+                    <h3 class="font-semibold leading-snug mb-1 text-gray-900">${noticia.title}</h3>
+                    <div class="text-xs text-gray-500">${noticia.time}</div>
+                `;
+                
+                newsContainer.appendChild(newsItem);
+            });
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            populateNews();
+            
+            // Add smooth animations on scroll
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all news cards and ad banners
+            document.querySelectorAll('.news-card, .ad-banner').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(el);
+            });
+        });
+
+        // Handle audio stream errors
+        radioStream.addEventListener('error', function(e) {
+            console.error('Audio stream error:', e);
+            isPlaying = false;
+            playIcon.classList.remove('hidden');
+            pauseIcon.classList.add('hidden');
+        });
+    </script>
+</body>
+</html>
